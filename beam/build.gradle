@@ -1,0 +1,8 @@
+def beamVersion = "2.36.0"
+
+dependencies {
+    implementation "org.apache.beam:beam-sdks-java-core:${beamVersion}"
+    implementation("org.apache.beam:beam-runners-flink-1.13:${beamVersion}") {
+        exclude group: "org.apache.flink"
+    }
+}
