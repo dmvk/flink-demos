@@ -52,6 +52,7 @@ subprojects {
 
         if (project.name != "beam") {
             compileOnly "org.apache.flink:flink-streaming-java:${flinkVersion}"
+            compileOnly "org.apache.flink:flink-table-api-java-bridge:${flinkVersion}"
             testImplementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
             testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
         }

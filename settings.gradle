@@ -1,5 +1,6 @@
 rootProject.name = 'flink-demos'
 
+include 'backfill'
+include 'beam'
 include 'common'
 include 'failing'
-include 'beam'
