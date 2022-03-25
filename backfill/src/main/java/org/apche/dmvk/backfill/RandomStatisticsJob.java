@@ -1,5 +1,6 @@
 package org.apche.dmvk.backfill;
 
+import com.google.common.base.MoreObjects;
 import java.io.IOException;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.state.ValueState;
@@ -105,17 +106,12 @@ public class RandomStatisticsJob {
 
     @Override
     public String toString() {
-      return "ExampleOutput{"
-          + "bucket='"
-          + bucket
-          + '\''
-          + ", count="
-          + count
-          + ", min="
-          + min
-          + ", max="
-          + max
-          + '}';
+      return MoreObjects.toStringHelper(Statistics.class)
+          .add("bucket", bucket)
+          .add("count", count)
+          .add("min", min)
+          .add("max", max)
+          .toString();
     }
   }
 

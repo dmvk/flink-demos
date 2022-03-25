@@ -61,6 +61,8 @@ subprojects {
         errorprone "com.uber.nullaway:nullaway:0.9.5"
         errorprone "com.google.errorprone:error_prone_core:2.11.0"
 
+        implementation "com.google.guava:guava:31.1-jre"
+
         // lombok
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
