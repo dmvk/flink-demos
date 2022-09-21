@@ -36,7 +36,7 @@ subprojects {
     apply plugin: "net.ltgt.errorprone"
 
     ext {
-        flinkVersion = '1.15-SNAPSHOT'
+        flinkVersion = '1.17-SNAPSHOT'
         lombokVersion = '1.18.22'
     }
 

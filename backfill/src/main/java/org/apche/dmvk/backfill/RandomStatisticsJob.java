@@ -11,6 +11,7 @@ import org.apache.flink.connector.datagen.table.DataGenConnectorOptions;
 import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
 import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
+import org.apache.flink.streaming.api.environment.ExecutionCheckpointingOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.table.api.DataTypes;
@@ -21,15 +22,16 @@ import org.apache.flink.util.Collector;
 
 public class RandomStatisticsJob {
 
-  private static final long NUM_BUCKETS = 10_000;
+  private static final long NUM_BUCKETS = 1_000;
   private static final long RANDOM_MIN = 0;
   private static final long RANDOM_MAX = 1_000_000;
 
   public static void main(String[] args) throws Exception {
     final Configuration configuration = new Configuration();
+    configuration.set(
+        ExecutionCheckpointingOptions.BOUNDED_SAVEPOINT_PATH, "file:///tmp/flink-demo");
     final StreamExecutionEnvironment env =
         StreamExecutionEnvironment.getExecutionEnvironment(configuration);
-    final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
     final TableDescriptor.Builder descriptorBuilder =
         TableDescriptor.forConnector("datagen")
             .schema(
@@ -58,6 +60,7 @@ public class RandomStatisticsJob {
         throw new IllegalArgumentException("Invalid option.");
     }
 
+    final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
     tableEnv
         .toDataStream(tableEnv.from(descriptorBuilder.build()), RandomNumberEvent.class)
         .keyBy(RandomStatisticsJob::getKey)
@@ -154,7 +157,7 @@ public class RandomStatisticsJob {
     public void processElement(
         RandomNumberEvent event, Context context, Collector<Statistics> collector)
         throws Exception {
-      final long newCount = getOrDefault(countState, 1L) + 1L;
+      final long newCount = getOrDefault(countState, 0L) + 1L;
       countState.update(newCount);
       final long newMin = Math.min(getOrDefault(minState, Long.MAX_VALUE), event.getRandom());
       minState.update(newMin);
